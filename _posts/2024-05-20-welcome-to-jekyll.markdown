@@ -1,29 +1,89 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
+title:  "Mono, Reactor, and Flux: The Reactively Ridiculous Trio!"
 date:   2024-05-20 23:16:43 +1000
-categories: jekyll update
+categories: spring mono reactor flux
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+Over the past year, I've been building parts of a BFF using [Project Reactor][project-reactor] along with spring boot. I found this a much better way to compose asynchronous calls while processing requests to various upstream services. As a BFF, one of the vectors that needs to maximised on is throughput. Blocking requests tend to exhaust their threads quickly as upstream services are being waited on. Hence the use of a non blocking framework such as reactor to the rescue.
 
-Jekyll requires blog post files to be named according to the following format:
+This article talks about the different capabilities of using Reactor to process requests along with how to test those snippets.
 
-`YEAR-MONTH-DAY-title.MARKUP`
+**Hello Flux**
 
-Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `MARKUP` is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+A simple way to create a Flux (a publisher that emits elements) is with the below:
 
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
+{% highlight java %}
+public class FluxGenerator<T> {
+    public Flux<T> getSimpleFlux(T[] elements) {
+        return Flux.just(elements);
+    }
+}
 {% endhighlight %}
 
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
+Generation and testing to see if the elements are emitted correctly can be done with StepVerifier
 
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+{% highlight java %}
+@Test
+public void testSimpleFlux() {
+    FluxGenerator<Character> obj = new FluxGenerator<>();
+    Flux<Character> flux = obj.getSimpleFlux(new Character[] {'a','b','c','d','e'});
+
+    StepVerifier.create(flux)
+            .expectNext('a')
+            .expectNext('b')
+            .expectNext('c')
+            .expectNext('d')
+            .expectNext('e')
+            .verifyComplete();
+}
+{% endhighlight %}
+
+{% highlight java %}
+public class FluxGenerator<T> {
+    public Flux<T> getSimpleFlux(T[] elements) {
+        return Flux.just(elements);
+    }
+}
+{% endhighlight %}
+
+**Flux with transformations**
+
+While processing requests there is generally the need to transform the emitted elements into different types or values. An example of this is transformation of upstream service or database value objects into response objects. This is generally achieved with a map operator.
+
+{% highlight java %}
+@Test
+public void testMappedFlux() {
+    FluxGenerator<Integer> obj = new FluxGenerator<>();
+    Flux<Integer> flux = obj.getSimpleFlux(new Integer[] {1,2,3,4,5});
+    flux = flux.map(element -> element + 1);
+
+    StepVerifier.create(flux)
+            .expectNext(2)
+            .expectNext(3)
+            .expectNext(4)
+            .expectNext(5)
+            .expectNext(6)
+            .verifyComplete();
+}
+{% endhighlight %}
+
+**Combining two Flux publishers**
+
+As a natural extension of that, if you are working on a BFF layer or a top level service, you'd want to call many services in the backend and fetch results from each of them. Perhaps you have two services that return shards of data that you want to combine into one.
+
+Merging the two is simple and can be done with the mergeWith operator. You can also reduce the verbosity of the StepVerifier by adding all the expectations in one `expectNext` call.
+
+{% highlight java %}
+@Test
+public void testCombiningTwoFluxesIntoOne() {
+    FluxGenerator<Integer> obj = new FluxGenerator<>();
+    Flux<Integer> flux1 = obj.getSimpleFlux(new Integer[] {1,2,3,4,5});
+    Flux<Integer> flux2 = obj.getSimpleFlux(new Integer[] {6,7,8,9,0});
+    Flux<Integer> fluxCombined = flux1.mergeWith(flux2);
+    StepVerifier.create(fluxCombined)
+            .expectNext(1,2,3,4,5,6,7,8,9,0)
+            .verifyComplete();
+}
+{% endhighlight %}
+
+[project-reactor]: https://projectreactor.io
