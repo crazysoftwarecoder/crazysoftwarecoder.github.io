@@ -86,4 +86,28 @@ public void testCombiningTwoFluxesIntoOne() {
 }
 {% endhighlight %}
 
+**Programmatic Flux**
+
+Seeing those different fluxes generated statically with specific numbers as you saw in those previous examples, you might have a question as to how to dynamically generate values with a Flux, as in by calling a service and then using the response as part of the Flux generated elements. A Sink comes to the rescue. Let's let that sink in!
+
+{% highlight java %}
+@Test
+public void testSubscriptionWithError() {
+    Flux<String> flux = Flux.generate(
+            () -> 'A',
+            (state, sink) -> {
+                sink.next(state + "");
+                if (state == 'Z') sink.complete();
+                return (char) (state + 1);
+            }
+    );
+    flux.subscribe(elem -> System.out.print(elem + " "));
+}
+
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+Process finished with exit code 0
+{% endhighlight %}
+
+This will print the entire alphabet in upper case. 
+
 [project-reactor]: https://projectreactor.io
