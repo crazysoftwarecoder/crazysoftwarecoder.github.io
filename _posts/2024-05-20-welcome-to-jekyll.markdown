@@ -88,7 +88,7 @@ public void testCombiningTwoFluxesIntoOne() {
 
 **Programmatic Flux**
 
-Seeing those different fluxes generated statically with specific numbers as you saw in those previous examples, you might have a question as to how to dynamically generate values with a Flux, as in by calling a service and then using the response as part of the Flux generated elements. A Sink comes to the rescue. Let's let that sink in!
+Seeing those different fluxes generated statically with specific values as you saw in those previous examples, you might have a question as to how to dynamically generate values with a Flux, as in by calling a service and then using the response as part of the Flux generated elements. A *Sink* comes to the rescue. Let's let that sink in!
 
 {% highlight java %}
 @Test
@@ -104,6 +104,7 @@ public void testSubscriptionWithError() {
     flux.subscribe(elem -> System.out.print(elem + " "));
 }
 
+Output:
 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
 Process finished with exit code 0
 {% endhighlight %}
