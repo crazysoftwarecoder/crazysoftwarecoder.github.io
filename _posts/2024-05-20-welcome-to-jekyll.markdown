@@ -109,6 +109,6 @@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 Process finished with exit code 0
 {% endhighlight %}
 
-This will print the entire alphabet in upper case. 
+The first line within the generate initialises the state. The next block processes the state and is responsible for generating the next state and informing the Flux when to stop. This will print the entire alphabet in upper case. 
 
 [project-reactor]: https://projectreactor.io
