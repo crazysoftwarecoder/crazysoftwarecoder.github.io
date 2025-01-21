@@ -13,9 +13,11 @@ Let's start with a simple example. You have a set of servers and you'd like to d
 
 Using the same logic, you could now retrieve the key "hello" from server 2, again using the same hash function.
 
+<div style="text-align: center; margin: 20px 0;">
+  <img src="{{ site.baseurl }}/images/consistent-hashing/traditional_hashing.png" alt="traditional-hashing">
+</div>
+
+
 Now this is all good and works well, but what happens when you add a new server?
 
 
-![_config.yml]({{ site.baseurl }}/images/config.png)
-
-The easiest way to make your first post is to edit this one. Go into /_posts/ and update the Hello World markdown file. For more instructions head over to the [Jekyll Now repository](https://github.com/barryclark/jekyll-now) on GitHub.
