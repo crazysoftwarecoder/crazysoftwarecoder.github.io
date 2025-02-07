@@ -31,3 +31,15 @@ To rectify this, we now have to go through the entire key space across all serve
 This is where Consistent Hashing comes in. Consistent Hashing is a technique that allows us to distribute data across a cluster of servers in a way that minimizes the number of keys that need to be moved when a server is added or removed from the cluster.
 
 Thus for distributed data systems that store billions of K-V pairs, consistent hashing is a more elegant solution.
+
+## How does Consistent Hashing work?
+
+Let's assume you have 3 servers to add to your cluster. You'd first hash the servers and get a hash value for each server. These hash values will be stored in a logical ring. 
+
+Now when you want to store a key, you'd hash the key which will also map to a location on the ring. You'd then find the server that's closest to the location that was hashed. The closest server in clockwise direction is the server that will store the key and it's value.
+
+<div style="text-align: center; margin: 15px 0;">
+  <img src="{{ site.baseurl }}/images/consistent-hashing/hash_ring_hashing_to_server.png" alt="key-hashing-to-server">
+  <p><em>Figure 2. Key hashing to a server</em></p>
+</div>
+
