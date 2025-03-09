@@ -86,4 +86,4 @@ exclude:
   - CNAME
 
 # Add the resume URL
-resume_url: https://github.com/crazysoftwarecoder/LaTeX-resume/blob/main/AshwanthFernando.pdf
+resume_url: /resume/AshwanthFernando.pdf

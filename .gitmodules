@@ -1,0 +1,3 @@
+[submodule "resume"]
+	path = resume
+	url = https://github.com/crazysoftwarecoder/LaTeX-resume.git
