@@ -36,14 +36,12 @@ document.addEventListener('DOMContentLoaded', function() {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 3a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V4a1 1 0 0 1 1-1zm9 9h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2zM4 12a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1zm9-9a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0V4a1 1 0 0 0-1-1zM4 5.27l.71.71a1 1 0 0 0 1.41-1.41l-.71-.71a1 1 0 0 0-1.41 1.41zm15.98 2.44a1 1 0 0 0-1.41 0l-.71.71a1 1 0 0 0 1.41 1.41l.71-.71a1 1 0 0 0 0-1.41zM12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/>
         </svg>
-        <span class="theme-label">Light mode</span>
       `;
     } else {
       themeIcon.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12.79 21a9 9 0 1 1 8.21-14 1 1 0 0 1-1.35 1.29 7 7 0 1 0 .24 9.49 1 1 0 1 1 1.35 1.29c-2.09 1.37-4.59 1.93-7.05 1.93z"/>
         </svg>
-        <span class="theme-label">Dark mode</span>
       `;
     }
   }
