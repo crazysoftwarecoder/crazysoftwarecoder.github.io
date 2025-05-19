@@ -17,10 +17,32 @@ html {
   font-size: 100%;
 }
 
+:root {
+  --background-color: #ffffff;
+  --foreground-color: #333333;
+  --link-color: #4183C4;
+  --heading-color: #222222;
+  --border-color: #e8e8e8;
+  --button-background: #f0f0f0;
+  --button-foreground: #333333;
+  --code-background: #f8f8f8;
+}
+
+[data-theme="dark"] {
+  --background-color: #121212;
+  --foreground-color: #e0e0e0;
+  --link-color: #64b5f6;
+  --heading-color: #ffffff;
+  --border-color: #333333;
+  --button-background: #333333;
+  --button-foreground: #e0e0e0;
+  --code-background: #222222;
+}
+
 body {
-	background: $white;
+	background: var(--background-color);
   font: 18px/1.4 $helvetica;
-  color: $darkGray;
+  color: var(--foreground-color);
 }
 
 .container {
@@ -32,7 +54,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $helveticaNeue;
-  color: $darkerGray;
+  color: var(--heading-color);
   font-weight: bold;
 
   line-height: 1.7;
@@ -69,11 +91,11 @@ p {
 }
 
 a {
-  color: $blue;
+  color: var(--link-color);
   text-decoration: none;
 	cursor: pointer;
   &:hover, &:active {
-    color: $blue;
+    color: var(--link-color);
   }
 }
 
@@ -152,6 +174,8 @@ img {
 
 .wrapper-masthead {
   margin-bottom: 50px;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .masthead {
@@ -192,7 +216,7 @@ img {
 
 .site-name {
   margin: 0;
-  color: $darkGray;
+  color: var(--heading-color);
   cursor: pointer;
   font-family: $helveticaNeue;
   font-weight: 300;
@@ -202,7 +226,7 @@ img {
 
 .site-description {
   margin: -5px 0 0 0;
-  color: $gray;
+  color: var(--foreground-color);
   font-size: 16px;
 
   @include mobile {
@@ -215,6 +239,8 @@ nav {
   margin-top: 23px; // @TODO: Vertically middle align
   font-family: $helveticaNeue;
   font-size: 18px;
+  display: flex;
+  align-items: center;
 
   @include mobile {
     float: none;
@@ -225,14 +251,14 @@ nav {
 
   a {
     margin-left: 20px;
-    color: $darkGray;
+    color: var(--foreground-color);
     text-align: right;
     font-weight: 300;
     letter-spacing: 1px;
 
     @include mobile {
       margin: 0 10px;
-      color: $blue;
+      color: var(--link-color);
     }
   }
 }
@@ -243,7 +269,7 @@ nav {
 
 .posts > .post {
   padding-bottom: 2em;
-  border-bottom: 1px solid $lightGray;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .posts > .post:last-child {
@@ -273,9 +299,9 @@ nav {
 
 .wrapper-footer {
   margin-top: 50px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  background-color: $lightGray;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--code-background);
 }
 
 footer {
@@ -287,3 +313,42 @@ footer {
 // ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
 @import "highlights";
 @import "svg-icons";
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: var(--button-background);
+  color: var(--button-foreground);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-left: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  @include mobile {
+    margin: 0 10px;
+  }
+}
+
+.theme-toggle:hover {
+  opacity: 0.8;
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+@include mobile {
+  .theme-label {
+    display: none;
+  }
+  
+  .theme-toggle svg {
+    margin-right: 0;
+  }
+}
