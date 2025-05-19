@@ -19,30 +19,40 @@ html {
 
 :root {
   --background-color: #ffffff;
-  --foreground-color: #333333;
-  --link-color: #4183C4;
-  --heading-color: #222222;
-  --border-color: #e8e8e8;
-  --button-background: #f0f0f0;
-  --button-foreground: #333333;
-  --code-background: #f8f8f8;
+  --foreground-color: #2c3e50;
+  --link-color: #3498db;
+  --heading-color: #2c3e50;
+  --border-color: #ecf0f1;
+  --button-background: #f5f6fa;
+  --button-foreground: #2c3e50;
+  --code-background: #f8f9fa;
+  --font-family-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-family-mono: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  --font-weight-normal: 400;
+  --font-weight-bold: 600;
+  --line-height: 1.6;
 }
 
 [data-theme="dark"] {
-  --background-color: #121212;
+  --background-color: #1a1a1a;
   --foreground-color: #e0e0e0;
   --link-color: #64b5f6;
   --heading-color: #ffffff;
   --border-color: #333333;
   --button-background: #333333;
   --button-foreground: #e0e0e0;
-  --code-background: #222222;
+  --code-background: #2d2d2d;
 }
 
 body {
 	background: var(--background-color);
-  font: 18px/1.4 $helvetica;
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height);
   color: var(--foreground-color);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -218,16 +228,19 @@ img {
   margin: 0;
   color: var(--heading-color);
   cursor: pointer;
-  font-family: $helveticaNeue;
-  font-weight: 300;
-  font-size: 28px;
-  letter-spacing: 1px;
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-bold);
+  font-size: 32px;
+  letter-spacing: -0.5px;
 }
 
 .site-description {
   margin: -5px 0 0 0;
   color: var(--foreground-color);
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.4;
+  opacity: 0.8;
 
   @include mobile {
     margin: 3px 0;
@@ -236,28 +249,22 @@ img {
 
 nav {
   float: right;
-  margin-top: 23px; // @TODO: Vertically middle align
-  font-family: $helveticaNeue;
-  font-size: 18px;
+  margin-top: 23px;
+  font-family: var(--font-family-sans);
+  font-size: 16px;
+  font-weight: var(--font-weight-normal);
   display: flex;
   align-items: center;
 
-  @include mobile {
-    float: none;
-    margin-top: 9px;
-    display: block;
-    font-size: 16px;
-  }
-
   a {
-    margin-left: 20px;
+    margin-left: 25px;
     color: var(--foreground-color);
     text-align: right;
-    font-weight: 300;
-    letter-spacing: 1px;
+    font-weight: var(--font-weight-normal);
+    letter-spacing: 0;
+    transition: color 0.3s ease;
 
-    @include mobile {
-      margin: 0 10px;
+    &:hover {
       color: var(--link-color);
     }
   }
@@ -318,24 +325,29 @@ footer {
 .theme-toggle {
   background: var(--button-background);
   color: var(--button-foreground);
-  border: 1px solid var(--border-color);
+  border: none;
   border-radius: 50%;
-  padding: 8px;
-  margin-left: 15px;
+  padding: 10px;
+  margin-left: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
   transition: all 0.3s ease;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
 
   @include mobile {
     margin: 0 10px;
-    width: 32px;
-    height: 32px;
-    padding: 6px;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
   }
 }
 
