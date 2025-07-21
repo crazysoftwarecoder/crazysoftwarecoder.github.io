@@ -2,17 +2,58 @@
 layout: default
 ---
 
-<div class="posts">
-  {% for post in site.posts %}
-    <article class="post">
-
-      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
-
-      <div class="entry">
-        {{ post.excerpt }}
-      </div>
-
-      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
-    </article>
-  {% endfor %}
+<div class="hero-section">
+  <div class="hero-content">
+    <h1 class="hero-title">Welcome to My Digital Space</h1>
+    <p class="hero-subtitle">Exploring technology, sharing insights, and building the future one post at a time.</p>
+    <div class="hero-cta">
+      <a href="#latest-posts" class="cta-button primary">Explore Posts</a>
+      <a href="{{ site.baseurl }}/about" class="cta-button secondary">About Me</a>
+    </div>
+  </div>
 </div>
+
+<section id="latest-posts" class="posts-section">
+  <div class="section-header">
+    <h2 class="section-title">Latest Posts</h2>
+    <p class="section-subtitle">Recent thoughts and discoveries</p>
+  </div>
+  
+  <div class="posts-grid">
+    {% for post in site.posts limit:6 %}
+      <article class="post-card">
+        <div class="post-meta">
+          <time class="post-date">{{ post.date | date: "%B %d, %Y" }}</time>
+          {% if post.tags %}
+            <div class="post-tags">
+              {% for tag in post.tags limit:2 %}
+                <span class="tag">{{ tag }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        
+        <h3 class="post-title">
+          <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+        </h3>
+        
+        <div class="post-excerpt">
+          {{ post.excerpt | strip_html | truncatewords: 25 }}
+        </div>
+        
+        <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">
+          Read More
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
+          </svg>
+        </a>
+      </article>
+    {% endfor %}
+  </div>
+  
+  {% if site.posts.size > 6 %}
+    <div class="view-all">
+      <a href="{{ site.baseurl }}/archive" class="view-all-link">View All Posts</a>
+    </div>
+  {% endif %}
+</section>
