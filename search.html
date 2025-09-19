@@ -1,0 +1,49 @@
+---
+layout: default
+title: Search
+---
+
+<div class="search-container">
+  <div class="search-header">
+    <h1 class="search-title">Search Posts</h1>
+    <p class="search-subtitle">Find articles by title, content, or tags</p>
+  </div>
+
+  <div class="search-input-container">
+    <input type="text" id="search-input" class="search-input" placeholder="Search posts..." autofocus>
+    <div class="search-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.5 14h-.79l-.28-.27a6.51 6.51 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.51 6.51 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="search-filters">
+    <label class="filter-option">
+      <input type="checkbox" id="search-titles" checked>
+      <span>Search in titles</span>
+    </label>
+    <label class="filter-option">
+      <input type="checkbox" id="search-content" checked>
+      <span>Search in content</span>
+    </label>
+    <label class="filter-option">
+      <input type="checkbox" id="search-tags" checked>
+      <span>Search in tags</span>
+    </label>
+  </div>
+
+  <div id="search-results" class="search-results">
+    <div class="no-results hidden" id="no-results">
+      <h3>No posts found</h3>
+      <p>Try adjusting your search terms or check the filter options above.</p>
+    </div>
+
+    <div class="initial-message" id="initial-message">
+      <h3>Start typing to search</h3>
+      <p>Search through {{ site.posts.size }} posts to find what you're looking for.</p>
+    </div>
+  </div>
+</div>
+
+<script src="{{ site.baseurl }}/assets/js/search.js"></script>

@@ -1,0 +1,161 @@
+---
+layout: default
+title: Archive
+---
+
+<div class="archive-container">
+  <div class="archive-header">
+    <h1 class="archive-title">All Posts</h1>
+    <p class="archive-subtitle">{{ site.posts.size }} posts about technology, engineering, and innovation</p>
+  </div>
+
+  <div class="archive-filters">
+    <div class="filter-group">
+      <label for="year-filter">Filter by year:</label>
+      <select id="year-filter" class="filter-select">
+        <option value="">All years</option>
+        {% assign years = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' | sort: 'name' | reverse %}
+        {% for year in years %}
+          <option value="{{ year.name }}">{{ year.name }} ({{ year.items.size }})</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="tag-filter">Filter by tag:</label>
+      <select id="tag-filter" class="filter-select">
+        <option value="">All tags</option>
+        {% assign tags = site.posts | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+        {% for tag in tags %}
+          {% unless tag == "" %}
+            <option value="{{ tag }}">{{ tag }}</option>
+          {% endunless %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="posts-list" id="posts-list">
+    {% assign current_year = "" %}
+    {% for post in site.posts %}
+      {% assign post_year = post.date | date: "%Y" %}
+      {% if post_year != current_year %}
+        {% unless forloop.first %}</div>{% endunless %}
+        {% assign current_year = post_year %}
+        <div class="year-section" data-year="{{ post_year }}">
+          <h2 class="year-heading">{{ post_year }}</h2>
+      {% endif %}
+
+      <article class="archive-post" data-year="{{ post_year }}" data-tags="{{ post.tags | join: ',' }}">
+        <div class="post-date">
+          <time datetime="{{ post.date | date: '%Y-%m-%d' }}">
+            {{ post.date | date: "%B %d" }}
+          </time>
+        </div>
+
+        <div class="post-content">
+          <h3 class="post-title">
+            <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+          </h3>
+
+          <div class="post-excerpt">
+            {{ post.excerpt | strip_html | truncatewords: 20 }}
+          </div>
+
+          {% if post.tags.size > 0 %}
+            <div class="post-tags">
+              {% for tag in post.tags %}
+                <span class="tag">{{ tag }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="post-meta">
+            <span class="reading-time">
+              {% assign words = post.content | number_of_words %}
+              {% if words < 360 %}
+                1 min read
+              {% else %}
+                {{ words | divided_by: 180 }} min read
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </article>
+
+      {% if forloop.last %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if site.posts.size == 0 %}
+    <div class="no-posts">
+      <h3>No posts yet</h3>
+      <p>Check back soon for new content!</p>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+(function() {
+  const yearFilter = document.getElementById('year-filter');
+  const tagFilter = document.getElementById('tag-filter');
+  const postsList = document.getElementById('posts-list');
+
+  function filterPosts() {
+    const selectedYear = yearFilter.value;
+    const selectedTag = tagFilter.value;
+
+    const yearSections = postsList.querySelectorAll('.year-section');
+    const posts = postsList.querySelectorAll('.archive-post');
+
+    // Hide all year sections initially
+    yearSections.forEach(section => {
+      section.style.display = 'none';
+    });
+
+    let hasVisiblePosts = false;
+
+    posts.forEach(post => {
+      const postYear = post.dataset.year;
+      const postTags = post.dataset.tags.split(',');
+
+      let showPost = true;
+
+      if (selectedYear && postYear !== selectedYear) {
+        showPost = false;
+      }
+
+      if (selectedTag && !postTags.includes(selectedTag)) {
+        showPost = false;
+      }
+
+      if (showPost) {
+        post.style.display = 'block';
+        // Show the year section for this post
+        const yearSection = post.closest('.year-section');
+        if (yearSection) {
+          yearSection.style.display = 'block';
+        }
+        hasVisiblePosts = true;
+      } else {
+        post.style.display = 'none';
+      }
+    });
+
+    // Hide year sections that have no visible posts
+    yearSections.forEach(section => {
+      const visiblePosts = section.querySelectorAll('.archive-post[style*="block"], .archive-post:not([style*="none"])');
+      if (visiblePosts.length === 0) {
+        section.style.display = 'none';
+      }
+    });
+  }
+
+  if (yearFilter && tagFilter) {
+    yearFilter.addEventListener('change', filterPosts);
+    tagFilter.addEventListener('change', filterPosts);
+  }
+})();
+</script>
