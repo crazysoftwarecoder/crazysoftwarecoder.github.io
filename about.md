@@ -12,5 +12,5 @@ Over the years, I've continuously honed my skills in building internet scale sys
 
 I've worked across many different layers in the backend from RPC services, database migrations, cloud infrastructure, load balancers, caching, observability and more.
 
-Enjoy reading my random ramblings and ruminations and feel free to reach out to me on [LinkedIn](https://www.linkedin.com/in/ashwanthf/) or [Twitter](https://x.com/ashwanthf).
+Enjoy reading my random ramblings and ruminations and feel free to reach out to me on [LinkedIn](https://www.linkedin.com/in/ashwanthf/).
 
