@@ -16,6 +16,39 @@
   </head>
 
   <body>
+    <!-- Cyberpunk Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-container">
+        <div class="loading-header">
+          <h1 class="loading-title">NEURAL LINK INITIALIZING</h1>
+          <div class="loading-subtitle">Connecting to the Matrix...</div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+            <div class="progress-glow"></div>
+          </div>
+          <div class="progress-text" id="progress-text">0%</div>
+        </div>
+
+        <div class="loading-phases">
+          <div class="phase" id="phase-1">► Scanning neural pathways...</div>
+          <div class="phase" id="phase-2">► Decrypting data streams...</div>
+          <div class="phase" id="phase-3">► Establishing connection...</div>
+          <div class="phase" id="phase-4">► Loading interface...</div>
+          <div class="phase" id="phase-5">► Welcome to the system.</div>
+        </div>
+
+        <div class="loading-grid">
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Hidden Audio Player -->
     <audio id="cyberpunk-audio" loop preload="auto">
       <source src="{{ site.baseurl }}/assets/music/cyberpunk_music.mp3" type="audio/mpeg">
@@ -97,6 +130,7 @@
     </div>
 
     {% include analytics.html %}
+    <script src="{{ site.baseurl }}/assets/js/cyberpunk-loader.js"></script>
     <script src="{{ site.baseurl }}/assets/js/theme-toggle.js"></script>
     <script src="{{ site.baseurl }}/assets/js/music-player.js"></script>
     <script src="{{ site.baseurl }}/assets/js/race-animation.js"></script>

@@ -1271,3 +1271,245 @@ html {
     }
   }
 }
+
+/* Cyberpunk Loading Screen */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #0a0a0a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(0, 255, 0, 0.05) 0%, transparent 50%);
+    animation: backgroundPulse 4s ease-in-out infinite alternate;
+  }
+
+  &.fade-out {
+    animation: fadeOut 0.8s ease-out forwards;
+  }
+}
+
+.loading-container {
+  text-align: center;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  z-index: 2;
+}
+
+.loading-header {
+  margin-bottom: 3rem;
+}
+
+.loading-title {
+  font-size: 2.5rem;
+  color: #00ffff;
+  text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  letter-spacing: 3px;
+  animation: titleGlow 2s ease-in-out infinite alternate;
+
+  @include mobile {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+}
+
+.loading-subtitle {
+  font-size: 1.2rem;
+  color: #ff00ff;
+  text-shadow: 0 0 10px #ff00ff;
+  letter-spacing: 1px;
+  animation: subtitleFlicker 3s linear infinite;
+
+  @include mobile {
+    font-size: 1rem;
+  }
+}
+
+.progress-container {
+  margin: 3rem 0;
+  position: relative;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 0 20px rgba(0, 255, 255, 0.3),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00ffff 0%, #ff00ff 50%, #00ff00 100%);
+  width: 0%;
+  transition: width 0.3s ease;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.8) 100%);
+    animation: progressShine 1.5s ease-in-out infinite;
+  }
+}
+
+.progress-glow {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(90deg, #00ffff 0%, #ff00ff 50%, #00ff00 100%);
+  border-radius: 6px;
+  opacity: 0.3;
+  filter: blur(4px);
+  z-index: -1;
+}
+
+.progress-text {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  color: #00ff00;
+  text-shadow: 0 0 15px #00ff00;
+  font-weight: bold;
+  letter-spacing: 2px;
+
+  @include mobile {
+    font-size: 1.2rem;
+  }
+}
+
+.loading-phases {
+  margin-top: 3rem;
+  text-align: left;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.phase {
+  font-size: 1rem;
+  color: #666;
+  margin: 0.8rem 0;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease;
+  letter-spacing: 1px;
+
+  &.active {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+    opacity: 1;
+    transform: translateX(0);
+    animation: phaseGlow 1s ease-in-out infinite alternate;
+  }
+
+  &.completed {
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00;
+    opacity: 0.7;
+    transform: translateX(0);
+  }
+
+  @include mobile {
+    font-size: 0.9rem;
+    margin: 0.6rem 0;
+  }
+}
+
+.loading-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.1;
+}
+
+.grid-line {
+  position: absolute;
+  background: linear-gradient(90deg, transparent 0%, #00ffff 50%, transparent 100%);
+  height: 1px;
+  width: 100%;
+  animation: gridMove 3s linear infinite;
+
+  &:nth-child(1) { top: 25%; animation-delay: 0s; }
+  &:nth-child(2) { top: 50%; animation-delay: 0.75s; }
+  &:nth-child(3) { top: 75%; animation-delay: 1.5s; }
+  &:nth-child(4) { top: 90%; animation-delay: 2.25s; }
+}
+
+/* Animations */
+@keyframes titleGlow {
+  0% { text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff; }
+  100% { text-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff; }
+}
+
+@keyframes subtitleFlicker {
+  0%, 98% { opacity: 1; }
+  99% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+@keyframes phaseGlow {
+  0% { text-shadow: 0 0 10px #00ffff; }
+  100% { text-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff; }
+}
+
+@keyframes progressShine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes gridMove {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes backgroundPulse {
+  0% { opacity: 0.5; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes duckBounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
