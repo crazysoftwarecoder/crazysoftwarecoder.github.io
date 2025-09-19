@@ -99,6 +99,15 @@ class DuckAnimation {
   }
 
   makeSound() {
+    // Play quack sound from assets/music
+    try {
+      const audio = new Audio('/assets/music/duck_quack.mp3');
+      audio.volume = 0.5;
+      audio.play().catch(e => console.log('Audio play failed:', e));
+    } catch (e) {
+      console.log('Audio creation failed:', e);
+    }
+
     // Visual feedback for "quack"
     const originalSize = this.duck.style.transform;
     this.duck.style.transform = 'scale(1.3) rotate(-15deg)';
