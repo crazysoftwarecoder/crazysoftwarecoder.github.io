@@ -4,8 +4,8 @@ layout: default
 
 <div class="hero-section">
   <div class="hero-content">
-    <h1 class="hero-title">Welcome to My Digital Space</h1>
-    <p class="hero-subtitle">Exploring technology, sharing insights, and building the future one post at a time.</p>
+    <h1 class="hero-title">Ashwanth Fernando</h1>
+    <p class="hero-subtitle">Engineering leader scaling distributed systems at tech giants like Apple, eBay, and Canva. Passionate about large-scale architectures and generative AI.</p>
     <div class="hero-cta">
       <a href="#latest-posts" class="cta-button primary">Explore Posts</a>
       <a href="{{ site.baseurl }}/about" class="cta-button secondary">About Me</a>
@@ -32,21 +32,31 @@ layout: default
             </div>
           {% endif %}
         </div>
-        
+
         <h3 class="post-title">
           <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
         </h3>
-        
+
         <div class="post-excerpt">
           {{ post.excerpt | strip_html | truncatewords: 25 }}
         </div>
-        
-        <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">
-          Read More
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-          </svg>
-        </a>
+
+        <div class="post-footer">
+          <div class="reading-time">
+            {% assign words = post.content | number_of_words %}
+            {% if words < 360 %}
+              1 min read
+            {% else %}
+              {{ words | divided_by: 180 }} min read
+            {% endif %}
+          </div>
+          <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">
+            Read More
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
+            </svg>
+          </a>
+        </div>
       </article>
     {% endfor %}
   </div>

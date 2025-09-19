@@ -1,6 +1,7 @@
 ---
 layout: post
 title: An implementation of Consistent Hashing in Java
+tags: [Java, Hashing, System Design, Distributed Systems]
 ---
 
 Hello Folks, Now anyone who's done some level of learning system design questions will have come across the concept of Consistent Hashing. While it's always been easy to explain the concept, I've found it hard to reason about the implementation many times.
