@@ -2,6 +2,7 @@
 class DuckAnimation {
   constructor() {
     this.duck = document.getElementById('rubber-duck');
+    this.balloon = document.getElementById('duck-speech-balloon');
     this.latestPostsSection = document.getElementById('latest-posts');
     this.isIntersecting = false;
     this.animationEnabled = true;
@@ -15,6 +16,7 @@ class DuckAnimation {
     this.setupIntersectionObserver();
     this.setupScrollListener();
     this.addInteractivity();
+    this.setupBalloonBehavior();
   }
 
   setupIntersectionObserver() {
@@ -78,6 +80,7 @@ class DuckAnimation {
     this.duck.addEventListener('mouseenter', () => {
       this.duck.style.animationPlayState = 'paused';
       this.duck.style.transform = 'scale(1.2) rotate(10deg)';
+      this.showBalloon();
     });
 
     this.duck.addEventListener('mouseleave', () => {
@@ -85,6 +88,7 @@ class DuckAnimation {
         this.duck.style.animationPlayState = 'running';
       }
       this.duck.style.transform = '';
+      this.hideBalloon();
     });
 
     this.duck.addEventListener('click', () => {
@@ -242,3 +246,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Add the balloon behavior methods to the DuckAnimation class
+DuckAnimation.prototype.setupBalloonBehavior = function() {
+  if (!this.balloon) return;
+
+  // Show balloon briefly when duck first appears, then hide it
+  setTimeout(() => {
+    this.showBalloon();
+    setTimeout(() => {
+      this.hideBalloon();
+    }, 3000); // Show for 3 seconds initially
+  }, 1000); // Wait 1 second after page load
+};
+
+DuckAnimation.prototype.showBalloon = function() {
+  if (this.balloon) {
+    this.balloon.classList.add('show');
+  }
+};
+
+DuckAnimation.prototype.hideBalloon = function() {
+  if (this.balloon) {
+    this.balloon.classList.remove('show');
+  }
+};
