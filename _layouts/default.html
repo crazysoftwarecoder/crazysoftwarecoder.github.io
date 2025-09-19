@@ -16,6 +16,11 @@
   </head>
 
   <body>
+    <!-- Hidden Audio Player -->
+    <audio id="cyberpunk-audio" loop preload="auto">
+      <source src="{{ site.baseurl }}/assets/music/cyberpunk_music.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="wrapper-masthead">
       <div class="container">
         <header class="masthead clearfix">
@@ -32,6 +37,13 @@
               <a href="{{ site.baseurl }}/about">About</a>
               <a href="{{ site.resume_url }}">Resume/CV</a>
             </nav>
+            <button id="music-toggle" class="music-toggle" aria-label="Toggle cyberpunk music">
+              <span id="music-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+              </span>
+            </button>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">
               <span id="theme-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -74,6 +86,7 @@
     </div>
     {% endif %}
 
+
     <div class="wrapper-footer">
       <div class="container">
         <footer class="footer">
@@ -84,6 +97,7 @@
 
     {% include analytics.html %}
     <script src="{{ site.baseurl }}/assets/js/theme-toggle.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/music-player.js"></script>
     <script src="{{ site.baseurl }}/assets/js/race-animation.js"></script>
     <script src="{{ site.baseurl }}/js/geo-resume-ip.js"></script>
   </body>
