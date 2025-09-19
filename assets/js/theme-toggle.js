@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('theme', 'dark');
     updateIcon('dark');
   } else {
-    // Default to light theme if no preference is found
-    document.documentElement.setAttribute('data-theme', 'light');
-    localStorage.setItem('theme', 'light');
-    updateIcon('light');
+    // Default to dark theme if no preference is found
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+    updateIcon('dark');
   }
   
   // Toggle theme when button is clicked
