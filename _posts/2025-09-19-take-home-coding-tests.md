@@ -4,6 +4,7 @@ title: "Take-Home Coding Tests: Signal or Noise?"
 date: 2025-09-19
 tags: [interviewing, coding, career, software-engineering, hiring]
 excerpt: "Take-home coding tests spark endless debate in tech hiring. Are they useful evaluation tools or just subjective noise? Here's my perspective from years of experience on both sides."
+comments: true
 ---
 
 Take-home coding tests spark endless debate. Useful evaluation, or just noise?

@@ -11,114 +11,28 @@
 
     <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
+    
+    <!-- Dark mode script - runs early to prevent flash -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      })();
+    </script>
 
     <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
   </head>
 
   <body>
-    <!-- Cyberpunk Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-      <div class="loading-container">
-        <div class="loading-header">
-          <h1 class="loading-title">NEURAL LINK INITIALIZING</h1>
-          <div class="loading-subtitle">Connecting to the Matrix...</div>
-        </div>
+    <!-- Removed cyberpunk loading screen and audio -->
 
-        <div class="progress-container">
-          <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-            <div class="progress-glow"></div>
-          </div>
-          <div class="progress-text" id="progress-text">0%</div>
-        </div>
-
-        <div class="loading-phases">
-          <div class="phase" id="phase-1">► Scanning neural pathways...</div>
-          <div class="phase" id="phase-2">► Decrypting data streams...</div>
-          <div class="phase" id="phase-3">► Establishing connection...</div>
-          <div class="phase" id="phase-4">► Loading interface...</div>
-          <div class="phase" id="phase-5">► Welcome to the system.</div>
-        </div>
-
-        <div class="loading-grid">
-          <div class="grid-line"></div>
-          <div class="grid-line"></div>
-          <div class="grid-line"></div>
-          <div class="grid-line"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Hidden Audio Player -->
-    <audio id="cyberpunk-audio" loop preload="auto">
-      <source src="{{ site.baseurl }}/assets/music/cyberpunk_music.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="wrapper-masthead">
-      <div class="container">
-        <header class="masthead clearfix">
-          <div class="header-left">
-            <div class="site-info">
-              <h1 class="site-name"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
-              <p class="site-description">{{ site.description }}</p>
-            </div>
-          </div>
-
-          <div class="header-right">
-            <nav>
-              <a href="{{ site.baseurl }}/">Blog</a>
-              <a href="{{ site.baseurl }}/about">About</a>
-              <a href="{{ site.resume_url }}">Resume/CV</a>
-            </nav>
-            <button id="music-toggle" class="music-toggle" aria-label="Toggle cyberpunk music">
-              <span id="music-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                </svg>
-              </span>
-            </button>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">
-              <span id="theme-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12.79 21a9 9 0 1 1 8.21-14 1 1 0 0 1-1.35 1.29 7 7 0 1 0 .24 9.49 1 1 0 1 1 1.35 1.29c-2.09 1.37-4.59 1.93-7.05 1.93z"/>
-                </svg>
-              </span>
-            </button>
-          </div>
-        </header>
-      </div>
-    </div>
+    <!-- Removed old header - using increment style header in content -->
 
     <div id="main" role="main" class="container">
       {{ content }}
     </div>
 
-    <!-- Rubber Duck Animation - Home page only -->
-    {% if page.url == "/" %}
-    <div class="duck-animation">
-      <div class="rubber-duck" id="rubber-duck">
-        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <!-- Duck body -->
-            <ellipse cx="32" cy="42" rx="16" ry="12" fill="#FFD700"/>
-            <!-- Duck head -->
-            <circle cx="32" cy="25" r="10" fill="#FFD700"/>
-            <!-- Duck bill -->
-            <ellipse cx="42" cy="25" rx="6" ry="3" fill="#FFA500"/>
-            <!-- Duck eye -->
-            <circle cx="36" cy="22" r="2" fill="#000"/>
-            <circle cx="37" cy="21" r="0.8" fill="#fff"/>
-            <!-- Duck wing -->
-            <ellipse cx="28" cy="38" rx="8" ry="6" fill="#FFED4E" transform="rotate(-20 28 38)"/>
-            <!-- Water ripples -->
-            <ellipse cx="32" cy="54" rx="20" ry="4" fill="none" stroke="#4A90E2" stroke-width="1" opacity="0.6"/>
-            <ellipse cx="32" cy="56" rx="24" ry="3" fill="none" stroke="#4A90E2" stroke-width="0.8" opacity="0.4"/>
-          </g>
-        </svg>
-        <div class="speech-balloon" id="duck-speech-balloon">Click me!</div>
-      </div>
-    </div>
-    {% endif %}
+    <!-- Removed duck animation -->
 
 
     <div class="wrapper-footer">
@@ -130,10 +44,7 @@
     </div>
 
     {% include analytics.html %}
-    <script src="{{ site.baseurl }}/assets/js/cyberpunk-loader.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/theme-toggle.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/music-player.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/race-animation.js"></script>
-    <script src="{{ site.baseurl }}/js/geo-resume-ip.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/resume-header.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/dark-mode-toggle.js"></script>
   </body>
 </html>

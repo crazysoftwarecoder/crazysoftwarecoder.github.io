@@ -2,6 +2,26 @@
 layout: default
 ---
 
+<div class="increment-header">
+  <div class="header-top">
+    <div class="print-edition">
+      <span class="new-badge">NEW</span>
+      <a href="/resume/AshwanthFernando-Global.pdf" class="print-link" id="resume-link">Download my Resume →</a>
+    </div>
+    <nav class="main-nav">
+      <a href="{{ site.baseurl }}/">Home</a>
+      <a href="{{ site.baseurl }}/about">About</a>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+        <span id="theme-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+            <path d="M12.79 21a9 9 0 1 1 8.21-14 1 1 0 0 1-1.35 1.29 7 7 0 1 0 .24 9.49 1 1 0 1 1 1.35 1.29c-2.09 1.37-4.59 1.93-7.05 1.93z"/>
+          </svg>
+        </span>
+      </button>
+    </nav>
+  </div>
+</div>
+
 <article class="post">
   <h1>{{ page.title }}</h1>
 
@@ -13,5 +33,25 @@ layout: default
     Written on {{ page.date | date: "%B %e, %Y" }}
   </div>
 
-  {% include disqus.html %}
+  {% if page.comments %}
+  <div class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+      var disqus_config = function () {
+        this.page.url = '{{ site.url }}{{ site.baseurl }}{{ page.url }}';
+        this.page.identifier = '{{ page.id }}' || '{{ page.url }}';
+        this.page.title = '{{ page.title | escape }}';
+      };
+      
+      (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://{{ site.disqus }}.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        s.async = true;
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  {% endif %}
 </article>
