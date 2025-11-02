@@ -18,6 +18,7 @@ class CyberpunkLoader {
     this.init();
   }
 
+  
   checkFirstLoad() {
     // Check if this is the first load using sessionStorage
     const hasLoaded = sessionStorage.getItem('cyberpunk-loaded');
