@@ -1,7 +1,7 @@
 ---
 layout: post
 title: An implementation of Consistent Hashing in Java
-date: 2025-01-21
+date: 2025-01-23
 tags: [Java, Hashing, System Design, Distributed Systems]
 excerpt: "A deep dive into implementing consistent hashing in Java, exploring the concept, benefits, and practical code examples for distributed systems."
 ---

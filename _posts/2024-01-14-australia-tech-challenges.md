@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Why Australia Struggles to Build a Thriving Tech Ecosystem"
-date: 2024-01-15
+date: 2024-01-14
 tags: [technology, australia, startup, policy, culture]
 excerpt: "Despite having world-class universities and talented engineers, Australia continues to lag behind in building a vibrant technology sector. Here's why the Lucky Country isn't so lucky when it comes to tech innovation."
 ---
