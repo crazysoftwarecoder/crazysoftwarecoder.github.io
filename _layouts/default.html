@@ -1,50 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }} – {{ site.description }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }}</title>
+    <meta name="description" content="{{ site.description }}">
 
-    {% include meta.html %}
+    <link rel="stylesheet" href="{{ site.baseurl }}/style.css">
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ site.baseurl }}/feed.xml">
 
-    <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
-    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
-    
-    <!-- Dark mode script - runs early to prevent flash -->
+    <!-- Dark Mode Script -->
     <script>
       (function() {
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
       })();
     </script>
-
-    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
-  </head>
-
-  <body>
-    <!-- Removed cyberpunk loading screen and audio -->
-
-    <!-- Removed old header - using increment style header in content -->
-
-    <div id="main" role="main" class="container">
-      {{ content }}
-    </div>
-
-    <!-- Removed duck animation -->
-
-
-    <div class="wrapper-footer">
-      <div class="container">
-        <footer class="footer">
-          {% include svg-icons.html %}
-        </footer>
-      </div>
-    </div>
-
     {% include analytics.html %}
-    <script src="{{ site.baseurl }}/assets/js/resume-header.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="{{ site.baseurl }}/" class="site-title">{{ site.name }}</a>
+        <nav class="site-nav">
+          <a href="{{ site.baseurl }}/about" class="nav-link">About</a>
+          <a href="{{ site.baseurl }}/resume/AshwanthFernando-Global.pdf" class="nav-link">Resume</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <span id="theme-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            </span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      {{ content }}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        {% include svg-icons.html %}
+        <p>&copy; {{ site.time | date: '%Y' }} {{ site.name }}. All rights reserved.</p>
+      </div>
+    </footer>
+
     <script src="{{ site.baseurl }}/assets/js/dark-mode-toggle.js"></script>
   </body>
 </html>
