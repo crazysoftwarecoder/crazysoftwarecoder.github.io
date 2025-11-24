@@ -69,20 +69,28 @@ async function updateResumeHeader() {
     }
   }
 
-  // Set resume URL and text based on detection
+  // Set resume URL based on detection
   const resumeUrl = isAustralia 
     ? '/resume/AshwanthFernando-Australia.pdf'
     : '/resume/AshwanthFernando-Global.pdf';
   
-  const resumeText = isAustralia
-    ? 'Download my CV →'
-    : 'Download my Resume →';
+  // Update main header link
+  if (resumeLink) {
+    resumeLink.href = resumeUrl;
+  }
 
-  // Update link and text
-  resumeLink.href = resumeUrl;
-  resumeLink.textContent = resumeText;
+  // Update any other resume links on the page
+  document.querySelectorAll('a[href*="resume"], a[href*="cv"]').forEach(link => {
+    // Check if it looks like a resume link (simple check)
+    if (link.href.includes('AshwanthFernando') || link.href.includes('resume')) {
+        link.href = resumeUrl;
+    }
+  });
+  
+  // Optional: Update text if you want to indicate region, otherwise leave as is
+  // resumeLink.textContent = isAustralia ? 'Resume (AU)' : 'Resume';
 
-  console.log(`Final decision (${detectionMethod}): ${resumeText}`);
+  console.log(`Final decision (${detectionMethod}): Serving ${isAustralia ? 'Australian' : 'Global'} resume`);
 }
 
 // Run when page loads
