@@ -4,10 +4,93 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }}</title>
+    
+    <!-- SEO Meta Tags -->
+    {% if page.excerpt %}
+    <meta name="description" content="{{ page.excerpt | strip_html | truncatewords: 30 }}" />
+    {% else %}
     <meta name="description" content="{{ site.description }}">
+    {% endif %}
+    <meta name="author" content="{{ site.name }}" />
+    
+    <!-- Open Graph / Facebook -->
+    {% if page.title %}
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{ page.title | escape }}" />
+    <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url }}" />
+    {% if page.excerpt %}
+    <meta property="og:description" content="{{ page.excerpt | strip_html | truncatewords: 30 }}" />
+    {% else %}
+    <meta property="og:description" content="{{ site.description }}" />
+    {% endif %}
+    {% if page.image %}
+    <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}{{ page.image }}" />
+    {% elsif site.avatar %}
+    <meta property="og:image" content="{{ site.avatar }}" />
+    {% endif %}
+    {% else %}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ site.name }}" />
+    <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url }}" />
+    <meta property="og:description" content="{{ site.description }}" />
+    {% if site.avatar %}
+    <meta property="og:image" content="{{ site.avatar }}" />
+    {% endif %}
+    {% endif %}
+    
+    <!-- Twitter Card -->
+    {% if page.title %}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ page.title | escape }}" />
+    {% if page.excerpt %}
+    <meta name="twitter:description" content="{{ page.excerpt | strip_html | truncatewords: 30 }}" />
+    {% else %}
+    <meta name="twitter:description" content="{{ site.description }}" />
+    {% endif %}
+    {% if page.image %}
+    <meta name="twitter:image" content="{{ site.url }}{{ site.baseurl }}{{ page.image }}" />
+    {% elsif site.avatar %}
+    <meta name="twitter:image" content="{{ site.avatar }}" />
+    {% endif %}
+    {% endif %}
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ site.url }}{{ site.baseurl }}{{ page.url }}" />
 
     <link rel="stylesheet" href="{{ site.baseurl }}/style.css">
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ site.baseurl }}/feed.xml">
+
+    <!-- Structured Data (JSON-LD) for Blog Posts -->
+    {% if page.title %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "{{ page.title | escape }}",
+      "author": {
+        "@type": "Person",
+        "name": "{{ site.name }}"
+      },
+      "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
+      "dateModified": "{{ page.date | date: '%Y-%m-%d' }}",
+      "description": "{{ page.excerpt | default: site.description | strip_html | truncatewords: 30 | escape }}",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ site.url }}{{ site.baseurl }}{{ page.url }}"
+      }
+      {% if site.url %}
+      ,"publisher": {
+        "@type": "Organization",
+        "name": "{{ site.name }}",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ site.avatar | default: site.url }}"
+        }
+      }
+      {% endif %}
+    }
+    </script>
+    {% endif %}
 
     <!-- Dark Mode Script -->
     <script>
