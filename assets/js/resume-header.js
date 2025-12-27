@@ -1,3 +1,43 @@
+// Password for CV access
+const CV_PASSWORD = 'getcvonline';
+
+// Check if user has already authenticated in this session
+function isAuthenticated() {
+  return sessionStorage.getItem('cv_authenticated') === 'true';
+}
+
+// Prompt for password and verify
+function promptPassword() {
+  const password = prompt('Please enter the password to access the CV:');
+  if (password === CV_PASSWORD) {
+    sessionStorage.setItem('cv_authenticated', 'true');
+    return true;
+  } else if (password !== null) {
+    alert('Incorrect password. Please try again.');
+    return false;
+  }
+  return false;
+}
+
+// Handle resume link clicks with password protection
+function handleResumeClick(e) {
+  e.preventDefault();
+  
+  // Check if already authenticated
+  if (!isAuthenticated()) {
+    if (!promptPassword()) {
+      return false;
+    }
+  }
+  
+  // Get the resume URL from the clicked link
+  const resumeUrl = e.currentTarget.href;
+  
+  // Allow the download
+  window.location.href = resumeUrl;
+  return true;
+}
+
 // Update resume header link based on location
 async function updateResumeHeader() {
   const resumeLink = document.getElementById('resume-link');
@@ -77,6 +117,8 @@ async function updateResumeHeader() {
   // Update main header link
   if (resumeLink) {
     resumeLink.href = resumeUrl;
+    // Add click handler for password protection
+    resumeLink.addEventListener('click', handleResumeClick);
   }
 
   // Update any other resume links on the page
@@ -84,6 +126,8 @@ async function updateResumeHeader() {
     // Check if it looks like a resume link (simple check)
     if (link.href.includes('AshwanthFernando') || link.href.includes('resume')) {
         link.href = resumeUrl;
+        // Add click handler for password protection
+        link.addEventListener('click', handleResumeClick);
     }
   });
   
