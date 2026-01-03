@@ -32,7 +32,15 @@ function handleResumeClick(e) {
   }
   
   // Get the resume URL from the clicked link
-  const resumeUrl = e.currentTarget.href;
+  let resumeUrl = e.currentTarget.getAttribute('href');
+  
+  // If href is relative, make it absolute
+  if (resumeUrl && !resumeUrl.startsWith('http')) {
+    const baseUrl = window.location.origin;
+    resumeUrl = baseUrl + (resumeUrl.startsWith('/') ? resumeUrl : '/' + resumeUrl);
+  }
+  
+  console.log(`Opening resume: ${resumeUrl}`);
   
   // Allow the download
   window.open(resumeUrl, '_blank');
@@ -46,13 +54,23 @@ function setupResumePasswordProtection() {
   
   allResumeLinks.forEach(link => {
     // Check if it's a resume link
-    if (link.href.includes('AshwanthFernando') || link.href.includes('resume') || link.id === 'resume-link') {
+    const hrefAttr = link.getAttribute('href');
+    if (hrefAttr && (hrefAttr.includes('AshwanthFernando') || hrefAttr.includes('resume') || link.id === 'resume-link')) {
+      // Store the href attribute (relative URL) before cloning
+      const currentHref = hrefAttr;
+      
+      console.log(`Setting up protection for link with href: ${currentHref}`);
+      
       // Remove existing listeners by cloning the node
       const newLink = link.cloneNode(true);
+      // Ensure the href attribute is preserved (use setAttribute to keep relative URL)
+      newLink.setAttribute('href', currentHref);
       link.parentNode.replaceChild(newLink, link);
       
       // Add click handler for password protection
       newLink.addEventListener('click', handleResumeClick, true);
+      
+      console.log(`Protected resume link: ${newLink.getAttribute('href')}`);
     }
   });
 }
@@ -136,33 +154,57 @@ async function updateResumeHeader() {
   // Update main header link
   if (resumeLink) {
     resumeLink.href = resumeUrl;
+    console.log(`Updated resume link to: ${resumeUrl} (Australia: ${isAustralia})`);
   }
 
+  // Update any other resume links on the page
+  document.querySelectorAll('a[href*="resume"], a[href*="cv"]').forEach(link => {
+    if (link.href.includes('AshwanthFernando') || link.href.includes('resume') || link.id === 'resume-link') {
+      link.href = resumeUrl;
+      console.log(`Updated additional resume link to: ${resumeUrl}`);
+    }
+  });
+
   // Set up password protection after URL is updated
+  // Use a longer delay to ensure DOM updates are complete
   setTimeout(() => {
     setupResumePasswordProtection();
-  }, 100);
+  }, 300);
 
-  console.log(`Final decision (${detectionMethod}): Serving ${isAustralia ? 'Australian' : 'Global'} resume`);
+  console.log(`Final decision (${detectionMethod}): Serving ${isAustralia ? 'Australian' : 'Global'} resume - URL: ${resumeUrl}`);
 }
 
 // Run when page loads
 document.addEventListener('DOMContentLoaded', () => {
-  updateResumeHeader();
-  // Also set up protection immediately in case links already exist
-  setupResumePasswordProtection();
+  // Wait for geo-detection to complete before setting up protection
+  updateResumeHeader().then(() => {
+    // Protection will be set up inside updateResumeHeader after URL is set
+  }).catch(() => {
+    // If geo-detection fails, still set up protection with default URL
+    setTimeout(() => {
+      setupResumePasswordProtection();
+    }, 500);
+  });
 });
 
 // Also run after a short delay in case DOMContentLoaded already fired
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    updateResumeHeader();
-    setupResumePasswordProtection();
+    updateResumeHeader().then(() => {
+      // Protection will be set up inside updateResumeHeader
+    }).catch(() => {
+      setTimeout(() => {
+        setupResumePasswordProtection();
+      }, 500);
+    });
   });
 } else {
   // DOM already loaded, run immediately
-  updateResumeHeader();
-  setTimeout(() => {
-    setupResumePasswordProtection();
-  }, 500);
+  updateResumeHeader().then(() => {
+    // Protection will be set up inside updateResumeHeader
+  }).catch(() => {
+    setTimeout(() => {
+      setupResumePasswordProtection();
+    }, 500);
+  });
 }
