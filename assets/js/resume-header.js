@@ -22,6 +22,7 @@ function promptPassword() {
 // Handle resume link clicks with password protection
 function handleResumeClick(e) {
   e.preventDefault();
+  e.stopPropagation();
   
   // Check if already authenticated
   if (!isAuthenticated()) {
@@ -34,8 +35,26 @@ function handleResumeClick(e) {
   const resumeUrl = e.currentTarget.href;
   
   // Allow the download
-  window.location.href = resumeUrl;
+  window.open(resumeUrl, '_blank');
   return true;
+}
+
+// Set up password protection for resume links
+function setupResumePasswordProtection() {
+  // Find all resume links
+  const allResumeLinks = document.querySelectorAll('a[href*="resume"], a[href*="cv"], a[id="resume-link"]');
+  
+  allResumeLinks.forEach(link => {
+    // Check if it's a resume link
+    if (link.href.includes('AshwanthFernando') || link.href.includes('resume') || link.id === 'resume-link') {
+      // Remove existing listeners by cloning the node
+      const newLink = link.cloneNode(true);
+      link.parentNode.replaceChild(newLink, link);
+      
+      // Add click handler for password protection
+      newLink.addEventListener('click', handleResumeClick, true);
+    }
+  });
 }
 
 // Update resume header link based on location
@@ -117,33 +136,33 @@ async function updateResumeHeader() {
   // Update main header link
   if (resumeLink) {
     resumeLink.href = resumeUrl;
-    // Add click handler for password protection
-    resumeLink.addEventListener('click', handleResumeClick);
   }
 
-  // Update any other resume links on the page
-  document.querySelectorAll('a[href*="resume"], a[href*="cv"]').forEach(link => {
-    // Check if it looks like a resume link (simple check)
-    if (link.href.includes('AshwanthFernando') || link.href.includes('resume')) {
-        link.href = resumeUrl;
-        // Add click handler for password protection
-        link.addEventListener('click', handleResumeClick);
-    }
-  });
-  
-  // Optional: Update text if you want to indicate region, otherwise leave as is
-  // resumeLink.textContent = isAustralia ? 'Resume (AU)' : 'Resume';
+  // Set up password protection after URL is updated
+  setTimeout(() => {
+    setupResumePasswordProtection();
+  }, 100);
 
   console.log(`Final decision (${detectionMethod}): Serving ${isAustralia ? 'Australian' : 'Global'} resume`);
 }
 
 // Run when page loads
-document.addEventListener('DOMContentLoaded', updateResumeHeader);
+document.addEventListener('DOMContentLoaded', () => {
+  updateResumeHeader();
+  // Also set up protection immediately in case links already exist
+  setupResumePasswordProtection();
+});
 
 // Also run after a short delay in case DOMContentLoaded already fired
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', updateResumeHeader);
+  document.addEventListener('DOMContentLoaded', () => {
+    updateResumeHeader();
+    setupResumePasswordProtection();
+  });
 } else {
   // DOM already loaded, run immediately
   updateResumeHeader();
+  setTimeout(() => {
+    setupResumePasswordProtection();
+  }, 500);
 }
