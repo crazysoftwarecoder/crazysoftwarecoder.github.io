@@ -1,6 +1,9 @@
 // Password for CV access
 const CV_PASSWORD = 'getcvonline';
 
+// Store the correct resume URL globally
+let correctResumeUrl = '/resume/AshwanthFernando-Global.pdf';
+
 // Check if user has already authenticated in this session
 function isAuthenticated() {
   return sessionStorage.getItem('cv_authenticated') === 'true';
@@ -31,60 +34,23 @@ function handleResumeClick(e) {
     }
   }
   
-  // Get the resume URL from the clicked link
-  let resumeUrl = e.currentTarget.getAttribute('href');
+  // Use the globally stored correct resume URL
+  const baseUrl = window.location.origin;
+  const fullUrl = baseUrl + correctResumeUrl;
   
-  // If href is relative, make it absolute
-  if (resumeUrl && !resumeUrl.startsWith('http')) {
-    const baseUrl = window.location.origin;
-    resumeUrl = baseUrl + (resumeUrl.startsWith('/') ? resumeUrl : '/' + resumeUrl);
-  }
+  console.log(`Opening resume: ${fullUrl}`);
   
-  console.log(`Opening resume: ${resumeUrl}`);
-  
-  // Allow the download
-  window.open(resumeUrl, '_blank');
+  // Open the resume
+  window.open(fullUrl, '_blank');
   return true;
 }
 
-// Set up password protection for resume links
-function setupResumePasswordProtection() {
-  // Find all resume links
-  const allResumeLinks = document.querySelectorAll('a[href*="resume"], a[href*="cv"], a[id="resume-link"]');
-  
-  allResumeLinks.forEach(link => {
-    // Check if it's a resume link
-    const hrefAttr = link.getAttribute('href');
-    if (hrefAttr && (hrefAttr.includes('AshwanthFernando') || hrefAttr.includes('resume') || link.id === 'resume-link')) {
-      // Store the href attribute (relative URL) before cloning
-      const currentHref = hrefAttr;
-      
-      console.log(`Setting up protection for link with href: ${currentHref}`);
-      
-      // Remove existing listeners by cloning the node
-      const newLink = link.cloneNode(true);
-      // Ensure the href attribute is preserved (use setAttribute to keep relative URL)
-      newLink.setAttribute('href', currentHref);
-      link.parentNode.replaceChild(newLink, link);
-      
-      // Add click handler for password protection
-      newLink.addEventListener('click', handleResumeClick, true);
-      
-      console.log(`Protected resume link: ${newLink.getAttribute('href')}`);
-    }
-  });
-}
-
-// Update resume header link based on location
-async function updateResumeHeader() {
-  const resumeLink = document.getElementById('resume-link');
-  if (!resumeLink) return;
-
+// Detect country and set the correct resume URL
+async function detectCountryAndSetResume() {
   let isAustralia = false;
-  let detectionMethod = 'unknown';
-  let ipDetected = false;
+  let detectionMethod = 'default';
 
-  // Method 1: Try IP-based detection first (works with VPN, more accurate for actual location)
+  // Method 1: Try IP-based detection first
   try {
     const response = await fetch('https://ipapi.co/json/');
     if (response.ok) {
@@ -93,18 +59,15 @@ async function updateResumeHeader() {
       
       if (data.country_code === 'AU' || data.country === 'Australia') {
         isAustralia = true;
-        detectionMethod = 'ip-api';
-        ipDetected = true;
+        detectionMethod = 'ipapi.co';
         console.log(`Detected Australia via IP: ${data.country} (${data.country_code})`);
       } else {
-        isAustralia = false;
-        detectionMethod = 'ip-api';
-        ipDetected = true;
+        detectionMethod = 'ipapi.co';
         console.log(`IP detection shows: ${data.country} (${data.country_code}) - not Australia`);
       }
     }
   } catch (error) {
-    console.log('IP-based geo detection failed:', error);
+    console.log('Primary IP detection failed:', error);
     
     // Fallback: Try alternative free API
     try {
@@ -115,96 +78,98 @@ async function updateResumeHeader() {
         
         if (altData.countryCode === 'AU' || altData.country === 'Australia') {
           isAustralia = true;
-          detectionMethod = 'ip-api-alt';
-          ipDetected = true;
+          detectionMethod = 'ip-api.com';
           console.log(`Detected Australia via alternative IP API: ${altData.country}`);
         } else {
-          isAustralia = false;
-          detectionMethod = 'ip-api-alt';
-          ipDetected = true;
+          detectionMethod = 'ip-api.com';
           console.log(`Alternative IP API shows: ${altData.country} - not Australia`);
         }
       }
     } catch (altError) {
       console.log('Alternative IP API also failed:', altError);
-    }
-  }
-
-  // Method 2: If IP detection failed, fallback to timezone detection
-  if (!ipDetected) {
-    try {
-      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      if (timezone.includes('Australia/') || timezone === 'Australia/Sydney' || timezone === 'Australia/Melbourne' || timezone === 'Australia/Brisbane' || timezone === 'Australia/Perth' || timezone === 'Australia/Adelaide' || timezone === 'Australia/Darwin' || timezone === 'Australia/Hobart') {
-        isAustralia = true;
-        detectionMethod = 'timezone';
-        console.log(`Fallback: Detected Australia via timezone: ${timezone}`);
-      } else {
-        console.log(`Fallback: Timezone shows ${timezone} - not Australia`);
+      
+      // Method 2: Fallback to timezone detection
+      try {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (timezone && timezone.startsWith('Australia/')) {
+          isAustralia = true;
+          detectionMethod = 'timezone';
+          console.log(`Fallback: Detected Australia via timezone: ${timezone}`);
+        } else {
+          console.log(`Fallback: Timezone shows ${timezone} - not Australia`);
+        }
+      } catch (e) {
+        console.log('Timezone detection failed:', e);
       }
-    } catch (e) {
-      console.log('Timezone detection failed:', e);
     }
   }
 
-  // Set resume URL based on detection
-  const resumeUrl = isAustralia 
+  // Set the correct resume URL based on detection
+  correctResumeUrl = isAustralia 
     ? '/resume/AshwanthFernando-Australia.pdf'
     : '/resume/AshwanthFernando-Global.pdf';
-  
-  // Update main header link
-  if (resumeLink) {
-    resumeLink.href = resumeUrl;
-    console.log(`Updated resume link to: ${resumeUrl} (Australia: ${isAustralia})`);
-  }
 
-  // Update any other resume links on the page
-  document.querySelectorAll('a[href*="resume"], a[href*="cv"]').forEach(link => {
-    if (link.href.includes('AshwanthFernando') || link.href.includes('resume') || link.id === 'resume-link') {
-      link.href = resumeUrl;
-      console.log(`Updated additional resume link to: ${resumeUrl}`);
-    }
-  });
+  console.log(`Final decision (${detectionMethod}): Serving ${isAustralia ? 'Australian' : 'Global'} resume`);
+  console.log(`Resume URL set to: ${correctResumeUrl}`);
 
-  // Set up password protection after URL is updated
-  // Use a longer delay to ensure DOM updates are complete
-  setTimeout(() => {
-    setupResumePasswordProtection();
-  }, 300);
-
-  console.log(`Final decision (${detectionMethod}): Serving ${isAustralia ? 'Australian' : 'Global'} resume - URL: ${resumeUrl}`);
+  return isAustralia;
 }
 
-// Run when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  // Wait for geo-detection to complete before setting up protection
-  updateResumeHeader().then(() => {
-    // Protection will be set up inside updateResumeHeader after URL is set
-  }).catch(() => {
-    // If geo-detection fails, still set up protection with default URL
-    setTimeout(() => {
-      setupResumePasswordProtection();
-    }, 500);
-  });
-});
+// Set up password protection on all resume links
+function setupPasswordProtection() {
+  // Find the main resume link
+  const resumeLink = document.getElementById('resume-link');
+  
+  if (resumeLink) {
+    // Update the href to show the correct URL (for right-click copy link, etc.)
+    resumeLink.setAttribute('href', correctResumeUrl);
+    
+    // Remove any existing click handlers by cloning
+    const newLink = resumeLink.cloneNode(true);
+    newLink.setAttribute('href', correctResumeUrl);
+    resumeLink.parentNode.replaceChild(newLink, resumeLink);
+    
+    // Add password protection click handler
+    newLink.addEventListener('click', handleResumeClick);
+    
+    console.log(`Password protection enabled for resume link: ${correctResumeUrl}`);
+  }
 
-// Also run after a short delay in case DOMContentLoaded already fired
+  // Also protect any other resume links on the page
+  document.querySelectorAll('a[href*="resume"]').forEach(link => {
+    if (link.id !== 'resume-link' && link.href.includes('AshwanthFernando')) {
+      const currentHref = link.getAttribute('href');
+      
+      // Clone to remove existing handlers
+      const newLink = link.cloneNode(true);
+      newLink.setAttribute('href', correctResumeUrl);
+      link.parentNode.replaceChild(newLink, link);
+      
+      // Add password protection
+      newLink.addEventListener('click', handleResumeClick);
+      
+      console.log(`Password protection enabled for additional resume link`);
+    }
+  });
+}
+
+// Initialize everything
+async function init() {
+  console.log('Initializing resume protection...');
+  
+  // First, detect the country and set the correct URL
+  await detectCountryAndSetResume();
+  
+  // Then set up password protection with the correct URL
+  setupPasswordProtection();
+  
+  console.log('Resume protection initialized successfully');
+}
+
+// Run when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    updateResumeHeader().then(() => {
-      // Protection will be set up inside updateResumeHeader
-    }).catch(() => {
-      setTimeout(() => {
-        setupResumePasswordProtection();
-      }, 500);
-    });
-  });
+  document.addEventListener('DOMContentLoaded', init);
 } else {
-  // DOM already loaded, run immediately
-  updateResumeHeader().then(() => {
-    // Protection will be set up inside updateResumeHeader
-  }).catch(() => {
-    setTimeout(() => {
-      setupResumePasswordProtection();
-    }, 500);
-  });
+  // DOM already loaded
+  init();
 }
