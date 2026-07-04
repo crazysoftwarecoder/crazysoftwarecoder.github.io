@@ -3,12 +3,14 @@ layout: default
 ---
 
 <div class="hero">
-  <h1 class="hero-title">Always Distributed</h1>
+  <p class="hero-kicker">Distributed Systems · Data · AI</p>
+  <h1 class="hero-title">Always <em>Distributed</em></h1>
   <p class="hero-text">
     {{ site.description }}
   </p>
 </div>
 
+<p class="section-label">Writing</p>
 <div class="posts-grid">
   {% for post in site.posts %}
     <article class="post-card">
@@ -17,7 +19,7 @@ layout: default
         <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
       </h2>
       <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
-      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read Article →</a>
+      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read article <span class="arrow">→</span></a>
     </article>
   {% endfor %}
 </div>
