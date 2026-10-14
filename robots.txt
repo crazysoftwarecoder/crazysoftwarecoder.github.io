@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://crazysoftwarecoder.github.io/sitemap.xmlSitemap: https://crazysoftwarecoder.github.io/where-it-grows/sitemap.xml
+Sitemap: https://crazysoftwarecoder.github.io/sitemap.xml
+Sitemap: https://crazysoftwarecoder.github.io/where-it-grows/sitemap.xml
