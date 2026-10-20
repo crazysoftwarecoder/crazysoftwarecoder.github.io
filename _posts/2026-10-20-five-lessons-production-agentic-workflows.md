@@ -69,10 +69,6 @@ The part people get wrong is where the eval cases come from. The natural instinc
 
 If you use a model as the judge, calibrate it. Grade a set by hand, measure how often the judge agrees with the humans, and re-check every time the judge model changes. An uncalibrated judge drifts, and the team ends up chasing noise.
 
-## A few that didn't make the list
-
-Trace every turn with a turn id, so when someone reports a wrong answer you can see exactly which nodes ran and what each tool returned, instead of trying to reproduce a non-deterministic system by hand. Treat guardrails as a first-class layer from day one, with the rules owned as data by the people accountable for them, rather than bolting compliance on at the end and re-architecting for every new rule. Resist multi-agent until you have a boundary that genuinely needs independence. One well-designed orchestrator beats five agents chatting to each other on cost, latency and debuggability. And route the cheap work to a cheap model. Intake, extraction and planning don't need your largest model, and moving them off it can cut spend by most of the bill.
-
 ## The pattern
 
 Every one of these lessons is really the same lesson. The model is one component in a system, and it's the least predictable one. Everything around it, the state, the loop, the tools, the rules, the tests, exists to make the system reliable despite that. The teams that struggle are the ones who treat the model as the system. The teams that ship are the ones who treat it as a very capable, slightly unreliable colleague, and build the scaffolding accordingly.
