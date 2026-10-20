@@ -15,7 +15,7 @@ Production is a different job. In production the agent runs thousands of times a
 
 The first version of our agent had the lending rules in the prompt and asked the model to work out serviceability from them. It was right most of the time. In a bank, "most of the time" is a disaster. A model that computes the right number 95% of the time is a model that gives a customer the wrong answer one time in twenty, and you cannot audit why, because the reasoning lives inside a forward pass you can't inspect.
 
-The fix was a hard rule that has held up on every project since: every number and every rule lives in deterministic code. The model's job is to gather inputs, decide which calculation or policy check to call, and explain the result in plain language. It never does the arithmetic and it never decides whether a rule applies.
+The fix was a hard rule that has held up on every project since: every number and every rule lives in deterministic code. The model's job is to gather inputs, decide which calculation or policy check to call, and explain the result in plain language. It never does the arithmatic and it never decides whether a rule applies.
 
 This sounds like it limits the agent. In practice it makes the agent more useful. Compliance can read the rule table because it's data, not prose buried in a prompt. When a rule changes you change one row and ship, instead of re-tuning a prompt and hoping nothing else moved. And when a broker disputes an answer you can show them the exact rule and the exact inputs that produced it.
 
@@ -37,7 +37,7 @@ If you only take one thing from this post, take this one. An unbounded agent loo
 
 ## 3. State is a structured object, not the transcript. The graph decides when you're done.
 
-Two mistakes that look separate but share a root cause.
+Two mistakes that look seperate but share a root cause.
 
 The first is sending the whole conversation back to the model on every turn. Cost grows with the square of the conversation length, and long transcripts make the model worse, not better. Important facts from turn two get drowned out by turn fifteen's chatter.
 
