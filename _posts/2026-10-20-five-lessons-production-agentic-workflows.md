@@ -7,7 +7,7 @@ excerpt: "Demos of LLM agents are easy. Running one in production, where a wrong
 comments: true
 ---
 
-Over the last couple of years I've spent most of my time building agentic systems, including a customer-facing one in a regulated industry where wrong answers have consequences. The demo version of an agent is easy to build. A model, a handful of tools, a loop, and you have something that looks remarkably smart in a 10 minute walkthrough.
+Over the last couple of years I've spent most of my time building agentic systems, including a customer-facing one in a regulated industry where wrong answers have consequences. The demo version of an agent is easy to build. You have the model, some tools and a loop and you have something that looks reasonably ok in a 10 mins walkthrough.
 
 Production is a different job. In production the agent runs thousands of times a day on inputs nobody scripted, every wrong answer has a cost, and when something goes wrong someone has to explain exactly what happened. Most of what I know about this I learned by getting it wrong first. Here are the five lessons I'd hand to anyone starting out, roughly in the order they bit me.
 
