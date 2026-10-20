@@ -13,7 +13,7 @@ Production is a different job. In production the agent runs thousands of times a
 
 ## 1. The model orchestrates and explains. It does not do domain specific maths or apply policy.
 
-The first version of our agent had the business rules in the prompt of a node and asked the model to work out eligibility and pricing from them. It was right most of the time. In a regulated business, "most of the time" is a disaster. A model that computes the right number 95% of the time is a model that gives a customer the wrong answer one time in twenty, and you cannot audit why, because the reasoning lives inside a forward pass you can't inspect.
+The first version of our agent had the business rules in the prompt of a node and asked the model to work out eligibility and pricing from them. It was right most of the time. In a regulated business, "most of the time" is a disaster. A model that computes the right number 95% of the time is a model that gives a customer the wrong answer one time in twenty, and you cannot audit why. Tracing tools will show you the prompt that went in and the answer that came out, but not how the model got from one to the other, and any working it writes down is a plausible story rather than a faithful record of the computation.
 
 The fix was a hard rule that has held up on every project since: every number and every rule lives in deterministic code. The model's job is to gather inputs, decide which calculation or policy check to call, and explain the result in plain language. It never does the arithmatic and it never decides whether a rule applies.
 
