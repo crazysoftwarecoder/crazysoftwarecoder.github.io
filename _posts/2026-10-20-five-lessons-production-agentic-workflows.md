@@ -11,7 +11,7 @@ Over the last couple of years I've spent most of my time building agentic system
 
 Production is a different job. In production the agent runs thousands of times a day on inputs nobody scripted, every wrong answer has a cost, and when something goes wrong someone has to explain exactly what happened. Most of what I know about this I learned by getting it wrong first. Here are the five lessons I'd hand to anyone starting out, roughly in the order they bit me.
 
-## 1. The model orchestrates and explains. It does not do maths or apply policy.
+## 1. The model orchestrates and explains. It does not do domain specific maths or apply policy.
 
 The first version of our agent had the business rules in the prompt and asked the model to work out eligibility and pricing from them. It was right most of the time. In a regulated business, "most of the time" is a disaster. A model that computes the right number 95% of the time is a model that gives a customer the wrong answer one time in twenty, and you cannot audit why, because the reasoning lives inside a forward pass you can't inspect.
 
